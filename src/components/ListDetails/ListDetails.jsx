@@ -3,11 +3,12 @@ import './ListDetails.css'
 
 
 const ListDetails = (props) => {
+    const list = props.selectedList;
     return (
         <>
-            <div>List Details</div>
+            <div>{list.name}</div>
             <ul>
-                {props.listData.tasks.map((item) => {
+                {props.list.tasks.map((item) => {
                     return <li key={item.id}>
                         {item.title}
                         <button
