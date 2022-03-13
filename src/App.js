@@ -49,8 +49,8 @@ function App() {
   const onSubmittingEdit = (task) => {
     //console.log("from app" , task);
     const updatedMockList = {
-      name: listData.name,
-      tasks: listData.tasks.map((item) => {
+      name: selectedList.name,
+      tasks: selectedList.tasks.map((item) => {
         if (item.id === task.id) {
           return task;
         } else {
@@ -58,8 +58,8 @@ function App() {
         }
       })
     };
-    setListData(updatedMockList);
-    setPage('list');
+    setSelectedList(updatedMockList);
+    setPage('listDetails');
   }
 
   const onListChangeHandler = (addedList) => {
@@ -67,7 +67,7 @@ function App() {
   }
 
   const onViewTasks = (list) => {
-    console.log('view task clickec' , list);
+   // console.log('view task clicked' , list);
     setPage('listDetails');
     setSelectedList(list);
   }

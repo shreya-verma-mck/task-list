@@ -22,13 +22,13 @@ const List = (props) => {
         <>
             <input value={newList} onChange={listChangeHandler}></input>
             <button onClick={addListHandler}>Add new list</button>
-            <div>List</div>
+            <div>Lists</div>
             <ul>
                 {props.listData.map((item) => {
                     return <li key={item.id}>
                         {item.name}
-                        <button>
-                            {/* onClick={()=>props.onEditTask(item)}> */}
+                        <button
+                            onClick={()=>props.onViewTasks(item)}>
                             View Tasks
                         </button>
                     </li>
