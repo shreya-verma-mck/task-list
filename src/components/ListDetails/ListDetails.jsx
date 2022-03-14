@@ -4,22 +4,27 @@ import './ListDetails.css'
 
 const ListDetails = (props) => {
     const list = props.selectedList;
-   // console.log(list);
+    // console.log(list);
     return (
         <>
-            <div>{list.name}</div>
+            <div>
+                <h1>{list.name}</h1>
+                <button
+                    onClick={() => props.onAddNewTask()}>
+                    Add new Task</button>
+            </div>
             <ul>
                 {list.tasks.map((item) => {
                     return <li key={item.id}>
                         {item.title}
                         <button
-                            onClick={()=>props.onEditTask(item)}>
+                            onClick={() => props.onEditTask(item)}>
                             Edit
                         </button>
                     </li>
                 })}
             </ul>
-            <button onClick={()=>props.onClickBack()}>Back</button>
+            <button onClick={() => props.onClickBack()}>Back</button>
         </>
     )
 }

@@ -26,6 +26,7 @@ const Task = (props) => {
                 onClick={onSaveHandler}
             >Save
             </button>
+            <button onClick={() => props.onClickBack()}>Back</button>
         </>
     )
 }
