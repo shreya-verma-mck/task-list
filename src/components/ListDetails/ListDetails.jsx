@@ -19,6 +19,7 @@ const ListDetails = (props) => {
                     </li>
                 })}
             </ul>
+            <button onClick={()=>props.onClickBack()}>Back</button>
         </>
     )
 }

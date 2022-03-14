@@ -72,11 +72,15 @@ function App() {
     setSelectedList(list);
   }
 
+  const backButtonHandler = () => {
+    setPage('list');
+  }
+
   return (
     <div>
       {
         (page === 'listDetails') ? (
-          <ListDetails selectedList={selectedList} onEditTask={onEditTask} />
+          <ListDetails selectedList={selectedList} onEditTask={onEditTask} onClickBack={backButtonHandler} />
         ) : (page === 'task') ? (
           <Task selectedTask={selectedTask} onSave={onSubmittingEdit} />
         ) : <List listData={listData} onListChangeHandler={onListChangeHandler} onViewTasks={onViewTasks}/>
