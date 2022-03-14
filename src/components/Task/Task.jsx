@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Task.css'
 
 const Task = (props) => {
+    console.log(props.selectedTask.title);
     const [task, setTask] = useState(props.selectedTask.title);
 
     const onUpdatingTask = (event) => {

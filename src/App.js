@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ListDetails from './components/ListDetails/ListDetails';
 import Task from './components/Task/Task';
 import List from './components/List/List';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const mockLists = [{
   id: 1,
@@ -49,30 +50,21 @@ function App() {
   }
 
   const onSubmitting = (task) => {
-    //console.log("from app" , task);
-   // console.log(selectedList);[...prevState.tasks, task])
-    // if (method === 'add') { setSelectedList((prevState) => {
-    //   const newTask = {name : prevState.name,
-    //   tasks : [...prevState.tasks,task],}
-
-    // }) };
-   // else {
-      const updatedMockList = {
-        name: selectedList.name,
-        tasks: selectedList.tasks.map((item) => {
-          if (item.id === task.id) {
-            return task;
-          } else {
-            return item;
-          }
-        })
-      };
-      if(method === 'add') {
-        task.id = Math.floor(Math.random() * 100)
-        updatedMockList.tasks = [...updatedMockList.tasks , task ]
-      }
-      setSelectedList(updatedMockList);
-   // }
+    const updatedMockList = {
+      name: selectedList.name,
+      tasks: selectedList.tasks.map((item) => {
+        if (item.id === task.id) {
+          return task;
+        } else {
+          return item;
+        }
+      })
+    };
+    if (method === 'add') {
+      task.id = Math.floor(Math.random() * 100)
+      updatedMockList.tasks = [...updatedMockList.tasks, task]
+    }
+    setSelectedList(updatedMockList);
     setPage('listDetails');
   }
 
@@ -99,13 +91,21 @@ function App() {
 
   return (
     <div>
-      {
+      <BrowserRouter>
+        <Routes>
+          <Route path='/lists' element={ <List listData={listData} onListChangeHandler={onListChangeHandler} onViewTasks={onViewTasks} />}></Route>
+          <Route path='/list/:listId' element={<ListDetails selectedList={selectedList} onEditTask={onEditTask} onClickBack={backButtonHandler} onAddNewTask={onAddNewTask} />}></Route>
+          <Route path='/task/:taskId' element={<Task selectedTask={selectedTask} onSave={onSubmitting} onClickBack={backButtonHandler} />}></Route>
+          <Route path='*' element={<div>404!Error. Page not found</div>}></Route>
+        </Routes>
+      </BrowserRouter>
+      {/* {
         (page === 'listDetails') ? (
           <ListDetails selectedList={selectedList} onEditTask={onEditTask} onClickBack={backButtonHandler} onAddNewTask={onAddNewTask} />
         ) : (page === 'task') ? (
           <Task selectedTask={selectedTask} onSave={onSubmitting} onClickBack={backButtonHandler} />
         ) : <List listData={listData} onListChangeHandler={onListChangeHandler} onViewTasks={onViewTasks} />
-      }
+      } */}
     </div>)
 }
 
