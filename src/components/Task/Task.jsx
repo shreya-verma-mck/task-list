@@ -1,35 +1,69 @@
-import React, { useState } from 'react'
-import './Task.css'
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { LISTS_ROUTE, NOT_FOUND_ROUTE } from "../../constants/routes";
+import { getItemBasedOnId } from "../../utils/common";
+import "./Task.css";
 
-const Task = (props) => {
-    console.log(props.selectedTask.title);
-    const [task, setTask] = useState(props.selectedTask.title);
+const Task = ({ listData, setListData }) => {
+  const navigate = useNavigate();
+  const { listId, taskId } = useParams();
 
-    const onUpdatingTask = (event) => {
-        //console.log(event.target.value);
-        setTask(event.target.value);
+  const [currentTask, setCurrentTask] = useState(null);
+
+  useEffect(() => {
+    const updatedCurrentTask = getItemBasedOnId(
+      getItemBasedOnId(listData, listId)?.tasks,
+      taskId
+    );
+
+    if (updatedCurrentTask) {
+      setCurrentTask(updatedCurrentTask);
+    } else {
+      navigate(NOT_FOUND_ROUTE);
     }
+  }, [listData, listId, taskId, navigate]);
 
-    const onSaveHandler = () => {
-        props.onSave({
-            title: task,
-            id: props.selectedTask.id
-        })
-    }
+  const onTaskTitleChange = (event) => {
+    setCurrentTask({
+      ...currentTask,
+      title: event.target.value,
+    });
+  };
 
-    return (
-        <>
-            <input
-                value={task}
-                onChange={onUpdatingTask}
-            ></input>
-            <button
-                onClick={onSaveHandler}
-            >Save
-            </button>
-            <button onClick={() => props.onClickBack()}>Back</button>
-        </>
-    )
-}
+  const onTaskSave = () => {
+    const updatedListData = listData.map((list) =>
+      list.id === parseInt(listId)
+        ? {
+            ...list,
+            tasks: list.tasks.map((task) =>
+              task.id === parseInt(taskId) ? currentTask : task
+            ),
+          }
+        : list
+    );
+    setListData(updatedListData);
+    navigate(`${LISTS_ROUTE}/${listId}`);
+  };
+
+  return currentTask ? (
+    <>
+      <input
+        value={currentTask.title}
+        onChange={onTaskTitleChange}
+        data-testid="testId-taskTitleTextInput"
+      />
+      <button onClick={onTaskSave}>Save</button>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Back
+      </button>
+    </>
+  ) : (
+    <></>
+  );
+};
 
 export default Task;

@@ -1,41 +1,50 @@
 import React, { useState } from "react";
-import './List.css'
+import { useNavigate } from "react-router-dom";
+import { LISTS_ROUTE } from "../../constants/routes";
+import "./List.css";
 
-const List = (props) => {
-    const [newList, setNewList] = useState('');
+const List = ({ setListData, listData }) => {
+  const [newListName, setNewListName] = useState("");
 
-    const listChangeHandler = (event) => {
-        setNewList(event.target.value);
-    }
+  const navigate = useNavigate();
 
-    const addListHandler = () => {
-        const addedList = {
-            id: Math.floor(Math.random() * 100),
-            name: newList,
-            tasks: []
-        }
-        props.onListChangeHandler(addedList);
-        setNewList('');
-    }
+  const onNewListNameChange = (event) => {
+    setNewListName(event.target.value);
+  };
 
-    return (
-        <>
-            <input value={newList} onChange={listChangeHandler}></input>
-            <button onClick={addListHandler}>Add new list</button>
-            <div>Lists</div>
-            <ul>
-                {props.listData.map((item) => {
-                    return <li key={item.id}>
-                        {item.name}
-                        <button
-                            onClick={()=>props.onViewTasks(item)}>
-                            View Tasks
-                        </button>
-                    </li>
-                })}
-            </ul>
-        </>
-    )
-}
+  const onListAdd = () => {
+    const addedList = {
+      id: Math.floor(Math.random() * 100),
+      name: newListName,
+      tasks: [],
+    };
+    setListData((prevState) => [...prevState, addedList]);
+    setNewListName("");
+  };
+
+  return (
+    <>
+      <input value={newListName} onChange={onNewListNameChange}></input>
+      <button onClick={onListAdd}>Add new list</button>
+      <div>Lists</div>
+      <ul>
+        {listData.map((list) => {
+          return (
+            <li key={list.id}>
+              {list.name}
+              <button
+                onClick={() => {
+                  navigate(`${LISTS_ROUTE}/${list.id}`);
+                }}
+              >
+                View Tasks
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
 
 export default List;
