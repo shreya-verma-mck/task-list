@@ -1,38 +1,39 @@
-export const LISTS = [
+const LISTS = [
   {
     id: 1,
-    name: "Self Learning",
+    name: 'Self Learning',
     tasks: [
       {
         id: 1,
-        title: "walk",
+        title: 'walk',
       },
       {
         id: 2,
-        title: "prep your meals",
+        title: 'prep your meals',
       },
       {
         id: 3,
-        title: "meditate",
+        title: 'meditate',
       },
     ],
   },
   {
     id: 2,
-    name: "Self Learning 2",
+    name: 'Self Learning 2',
     tasks: [
       {
         id: 1,
-        title: "walk 2",
+        title: 'walk 2',
       },
       {
         id: 2,
-        title: "prep your meals 2",
+        title: 'prep your meals 2',
       },
       {
         id: 3,
-        title: "meditate 2",
+        title: 'meditate 2',
       },
     ],
   },
 ];
+export default LISTS;
