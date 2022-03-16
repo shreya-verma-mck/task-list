@@ -9,7 +9,7 @@ const LISTS = [
       },
       {
         id: 2,
-        title: 'prep your meals',
+        title: 'presp your meals',
       },
       {
         id: 3,
