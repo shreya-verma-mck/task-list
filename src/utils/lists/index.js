@@ -1,4 +1,4 @@
-import { checkIfItemIdMatchesIdToSelect } from "../common/common";
+import { checkIfItemIdMatchesIdToSelect } from "../common";
 
 export const getListDataWithUpdatedTask = (
   listData,

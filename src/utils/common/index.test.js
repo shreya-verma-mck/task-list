@@ -1,5 +1,5 @@
 import { MOCK_LISTS } from "../../mocks/lists";
-import { getItemBasedOnId, replacePathParamsInRoute } from "./common";
+import { getItemBasedOnId, replacePathParamsInRoute } from ".";
 
 describe("getItemBasedOnId", () => {
   it("should return undefined when item not found in list based on id", () => {

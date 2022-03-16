@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LIST_DETAILS_ROUTE, LIST_ID_PATH_PARAM } from "../../constants/routes";
-import { replacePathParamsInRoute } from "../../utils/common/common";
-import { getListDataWithNewList } from "../../utils/lists/lists";
+import { replacePathParamsInRoute } from "../../utils/common";
+import { getListDataWithNewList } from "../../utils/lists";
 import "./AllListsPage.css";
 
 const AllListsPage = ({ setListData, listData }) => {

@@ -8,11 +8,8 @@ import {
   NOT_FOUND_ROUTE,
   TASK_ID_PATH_PARAM,
 } from "../../constants/routes";
-import {
-  getItemBasedOnId,
-  replacePathParamsInRoute,
-} from "../../utils/common/common";
-import Loader from "../../components/Loader/Loader";
+import { getItemBasedOnId, replacePathParamsInRoute } from "../../utils/common";
+import { Loader } from "../../components";
 
 const ListDetailsPage = ({ listData }) => {
   const [currentList, setCurrentList] = useState(null);

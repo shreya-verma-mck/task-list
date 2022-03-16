@@ -1,7 +1,5 @@
 import { useState } from "react";
-import ListDetailsPage from "./pages/ListDetailsPage/ListDetailsPage";
-import EditTaskPage from "./pages/EditTaskPage/EditTaskPage";
-import AllListsPage from "./pages/AllListsPage/AllListsPage";
+import { ListDetailsPage, EditTaskPage, AllListsPage } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LISTS } from "./constants/lists";
 import {

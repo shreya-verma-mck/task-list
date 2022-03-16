@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
+import { Loader } from "../../components";
 import {
   LIST_DETAILS_ROUTE,
   LIST_ID_PATH_PARAM,
   NOT_FOUND_ROUTE,
   TASK_ID_PATH_PARAM,
 } from "../../constants/routes";
-import {
-  getItemBasedOnId,
-  replacePathParamsInRoute,
-} from "../../utils/common/common";
-import { getListDataWithUpdatedTask } from "../../utils/lists/lists";
-import "./EditTaskPage";
+import { getItemBasedOnId, replacePathParamsInRoute } from "../../utils/common";
+import { getListDataWithUpdatedTask } from "../../utils/lists";
+import ".";
 
 const EditTaskPage = ({ listData, setListData }) => {
   const [currentTask, setCurrentTask] = useState(null);

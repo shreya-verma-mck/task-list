@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import EditTaskPage from "./EditTaskPage";
+import EditTaskPage from ".";
 import {
   EDIT_TASK_ROUTE,
   LIST_DETAILS_ROUTE,
@@ -8,7 +8,7 @@ import {
 } from "../../constants/routes";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MOCK_LISTS } from "../../mocks/lists";
-import { replacePathParamsInRoute } from "../../utils/common/common";
+import { replacePathParamsInRoute } from "../../utils/common";
 
 describe("EditTaskPage", () => {
   const mockSetListData = jest.fn();
