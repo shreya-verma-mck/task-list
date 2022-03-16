@@ -1,21 +1,36 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import Task from "./Task";
-import { LISTS_ROUTE, TASKS_ROUTE } from "../../constants/routes";
+import EditTaskPage from "./EditTaskPage";
+import {
+  EDIT_TASK_ROUTE,
+  LIST_DETAILS_ROUTE,
+  LIST_ID_PATH_PARAM,
+  TASK_ID_PATH_PARAM,
+} from "../../constants/routes";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MOCK_LISTS } from "../../mocks/lists";
+import { replacePathParamsInRoute } from "../../utils/common/common";
 
-describe("Task", () => {
+describe("EditTaskPage", () => {
   const mockSetListData = jest.fn();
   // Either render router or mock react-router-dom functions: useParams + useNavigate
   const component = (
-    <MemoryRouter initialEntries={[`${LISTS_ROUTE}/1${TASKS_ROUTE}/1`]}>
+    <MemoryRouter
+      initialEntries={[
+        replacePathParamsInRoute(EDIT_TASK_ROUTE, {
+          [LIST_ID_PATH_PARAM]: 1,
+          [TASK_ID_PATH_PARAM]: 1,
+        }),
+      ]}
+    >
       <Routes>
         <Route
-          path={`${LISTS_ROUTE}/:listId${TASKS_ROUTE}/:taskId`}
-          element={<Task listData={MOCK_LISTS} setListData={mockSetListData} />}
+          path={EDIT_TASK_ROUTE}
+          element={
+            <EditTaskPage listData={MOCK_LISTS} setListData={mockSetListData} />
+          }
         ></Route>
         <Route
-          path={`${LISTS_ROUTE}/:listId`}
+          path={LIST_DETAILS_ROUTE}
           element={<div>Mock List Page</div>}
         ></Route>
       </Routes>

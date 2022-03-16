@@ -1,10 +1,14 @@
 import { useState } from "react";
-import ListDetails from "./components/ListDetails/ListDetails";
-import Task from "./components/Task/Task";
-import List from "./components/List/List";
+import ListDetailsPage from "./pages/ListDetailsPage/ListDetailsPage";
+import EditTaskPage from "./pages/EditTaskPage/EditTaskPage";
+import AllListsPage from "./pages/AllListsPage/AllListsPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LISTS } from "./constants/lists";
-import { LISTS_ROUTE, TASKS_ROUTE } from "./constants/routes";
+import {
+  ALL_LISTS_ROUTE,
+  EDIT_TASK_ROUTE,
+  LIST_DETAILS_ROUTE,
+} from "./constants/routes";
 
 function App() {
   const [listData, setListData] = useState(LISTS);
@@ -15,32 +19,36 @@ function App() {
         <Routes>
           {/* Lists Page */}
           <Route
-            path={LISTS_ROUTE}
-            element={<List listData={listData} setListData={setListData} />}
+            path={ALL_LISTS_ROUTE}
+            element={
+              <AllListsPage listData={listData} setListData={setListData} />
+            }
           ></Route>
 
           {/* Create List Page */}
           {/* <Route
-            path={`${LISTS_ROUTE}/create`}
-            element={<ListCreate />}
+            path={CREATE_LIST_ROUTE}
+            element={<CreateListPage />}
           ></Route> */}
 
           {/* List Details */}
           <Route
-            path={`${LISTS_ROUTE}/:listId`}
-            element={<ListDetails listData={listData} />}
+            path={LIST_DETAILS_ROUTE}
+            element={<ListDetailsPage listData={listData} />}
           ></Route>
 
           {/* Create Task */}
-          <Route
-            path={`${LISTS_ROUTE}/:listId${TASKS_ROUTE}/create`}
-            element={<Task listData={listData} setListData={setListData} />}
-          ></Route>
+          {/* <Route
+            path={CREATE_TASK_ROUTE}
+            element={<CreateTaskPage listData={listData} setListData={setListData} />}
+          ></Route> */}
 
           {/* Edit Task */}
           <Route
-            path={`${LISTS_ROUTE}/:listId${TASKS_ROUTE}/:taskId`}
-            element={<Task listData={listData} setListData={setListData} />}
+            path={EDIT_TASK_ROUTE}
+            element={
+              <EditTaskPage listData={listData} setListData={setListData} />
+            }
           ></Route>
 
           <Route

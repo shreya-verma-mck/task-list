@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LISTS_ROUTE } from "../../constants/routes";
-import "./List.css";
+import { LIST_DETAILS_ROUTE, LIST_ID_PATH_PARAM } from "../../constants/routes";
+import { replacePathParamsInRoute } from "../../utils/common/common";
+import { getListDataWithNewList } from "../../utils/lists/lists";
+import "./AllListsPage.css";
 
-const List = ({ setListData, listData }) => {
+const AllListsPage = ({ setListData, listData }) => {
   const [newListName, setNewListName] = useState("");
 
   const navigate = useNavigate();
@@ -13,19 +15,15 @@ const List = ({ setListData, listData }) => {
   };
 
   const onListAdd = () => {
-    const addedList = {
-      id: Math.floor(Math.random() * 100),
-      name: newListName,
-      tasks: [],
-    };
-    setListData((prevState) => [...prevState, addedList]);
+    setListData((prevState) => getListDataWithNewList(prevState, newListName));
     setNewListName("");
   };
 
   return (
     <>
       <input value={newListName} onChange={onNewListNameChange}></input>
-      <button onClick={onListAdd}>Add new list</button>
+      <button onClick={onListAdd}>Create list</button>
+      {/* TODO: Redirect to new page for list creation */}
       <div>Lists</div>
       <ul>
         {listData.map((list) => {
@@ -34,7 +32,11 @@ const List = ({ setListData, listData }) => {
               {list.name}
               <button
                 onClick={() => {
-                  navigate(`${LISTS_ROUTE}/${list.id}`);
+                  navigate(
+                    replacePathParamsInRoute(LIST_DETAILS_ROUTE, {
+                      [LIST_ID_PATH_PARAM]: list.id,
+                    })
+                  );
                 }}
               >
                 View Tasks
@@ -47,4 +49,4 @@ const List = ({ setListData, listData }) => {
   );
 };
 
-export default List;
+export default AllListsPage;

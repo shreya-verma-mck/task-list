@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import "./ListDetails.css";
+import "./ListDetailsPage.css";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  LISTS_ROUTE,
+  CREATE_TASK_ROUTE,
+  EDIT_TASK_ROUTE,
+  LIST_ID_PATH_PARAM,
   NOT_FOUND_ROUTE,
-  TASKS_ROUTE,
+  TASK_ID_PATH_PARAM,
 } from "../../constants/routes";
+import {
+  getItemBasedOnId,
+  replacePathParamsInRoute,
+} from "../../utils/common/common";
+import Loader from "../../components/Loader/Loader";
 
-const ListDetails = ({ listData }) => {
-  const navigate = useNavigate();
-  const { listId } = useParams();
-
+const ListDetailsPage = ({ listData }) => {
   const [currentList, setCurrentList] = useState(null);
 
+  const navigate = useNavigate();
+  const listId = useParams()[LIST_ID_PATH_PARAM];
+
   useEffect(() => {
-    const updatedCurrentList = listData.find(
-      (list) => list.id === parseInt(listId)
-    );
+    const updatedCurrentList = getItemBasedOnId(listData, listId);
     if (updatedCurrentList) {
       setCurrentList(updatedCurrentList);
     } else {
@@ -30,7 +35,11 @@ const ListDetails = ({ listData }) => {
         <h1>{currentList.name}</h1>
         <button
           onClick={() => {
-            navigate(TASKS_ROUTE);
+            navigate(
+              replacePathParamsInRoute(CREATE_TASK_ROUTE, {
+                [LIST_ID_PATH_PARAM]: currentList.id,
+              })
+            );
           }}
         >
           Add new Task
@@ -44,7 +53,10 @@ const ListDetails = ({ listData }) => {
               <button
                 onClick={() => {
                   navigate(
-                    `${LISTS_ROUTE}/${currentList.id}${TASKS_ROUTE}/${task.id}`
+                    replacePathParamsInRoute(EDIT_TASK_ROUTE, {
+                      [LIST_ID_PATH_PARAM]: currentList.id,
+                      [TASK_ID_PATH_PARAM]: task.id,
+                    })
                   );
                 }}
               >
@@ -63,8 +75,8 @@ const ListDetails = ({ listData }) => {
       </button>
     </>
   ) : (
-    <></>
+    <Loader />
   );
 };
 
-export default ListDetails;
+export default ListDetailsPage;

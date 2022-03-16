@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LISTS_ROUTE, NOT_FOUND_ROUTE } from "../../constants/routes";
-import { getItemBasedOnId } from "../../utils/common";
-import "./Task.css";
+import Loader from "../../components/Loader/Loader";
+import {
+  LIST_DETAILS_ROUTE,
+  LIST_ID_PATH_PARAM,
+  NOT_FOUND_ROUTE,
+  TASK_ID_PATH_PARAM,
+} from "../../constants/routes";
+import {
+  getItemBasedOnId,
+  replacePathParamsInRoute,
+} from "../../utils/common/common";
+import { getListDataWithUpdatedTask } from "../../utils/lists/lists";
+import "./EditTaskPage";
 
-const Task = ({ listData, setListData }) => {
-  const navigate = useNavigate();
-  const { listId, taskId } = useParams();
-
+const EditTaskPage = ({ listData, setListData }) => {
   const [currentTask, setCurrentTask] = useState(null);
+
+  const navigate = useNavigate();
+
+  const params = useParams();
+  const listId = params[LIST_ID_PATH_PARAM];
+  const taskId = params[TASK_ID_PATH_PARAM];
 
   useEffect(() => {
     const updatedCurrentTask = getItemBasedOnId(
@@ -31,18 +44,14 @@ const Task = ({ listData, setListData }) => {
   };
 
   const onTaskSave = () => {
-    const updatedListData = listData.map((list) =>
-      list.id === parseInt(listId)
-        ? {
-            ...list,
-            tasks: list.tasks.map((task) =>
-              task.id === parseInt(taskId) ? currentTask : task
-            ),
-          }
-        : list
+    setListData(
+      getListDataWithUpdatedTask(listData, listId, taskId, currentTask)
     );
-    setListData(updatedListData);
-    navigate(`${LISTS_ROUTE}/${listId}`);
+    navigate(
+      replacePathParamsInRoute(LIST_DETAILS_ROUTE, {
+        [LIST_ID_PATH_PARAM]: listId,
+      })
+    );
   };
 
   return currentTask ? (
@@ -62,8 +71,8 @@ const Task = ({ listData, setListData }) => {
       </button>
     </>
   ) : (
-    <></>
+    <Loader />
   );
 };
 
-export default Task;
+export default EditTaskPage;
