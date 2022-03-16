@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import "./ListDetailsPage.css";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './ListDetailsPage.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
   CREATE_TASK_ROUTE,
   EDIT_TASK_ROUTE,
   LIST_ID_PATH_PARAM,
   NOT_FOUND_ROUTE,
   TASK_ID_PATH_PARAM,
-} from "../../constants/routes";
-import { getItemBasedOnId, replacePathParamsInRoute } from "../../utils/common";
-import { Loader } from "../../components";
+} from '../../constants/routes';
+import { getItemBasedOnId, replacePathParamsInRoute } from '../../utils/common';
+import { Loader } from '../../components';
 
-const ListDetailsPage = ({ listData }) => {
+function ListDetailsPage({ listData }) {
   const [currentList, setCurrentList] = useState(null);
 
   const navigate = useNavigate();
@@ -31,11 +32,12 @@ const ListDetailsPage = ({ listData }) => {
       <div>
         <h1>{currentList.name}</h1>
         <button
+          type="button"
           onClick={() => {
             navigate(
               replacePathParamsInRoute(CREATE_TASK_ROUTE, {
                 [LIST_ID_PATH_PARAM]: currentList.id,
-              })
+              }),
             );
           }}
         >
@@ -43,27 +45,27 @@ const ListDetailsPage = ({ listData }) => {
         </button>
       </div>
       <ul>
-        {currentList.tasks.map((task) => {
-          return (
-            <li key={task.id}>
-              {task.title}
-              <button
-                onClick={() => {
-                  navigate(
-                    replacePathParamsInRoute(EDIT_TASK_ROUTE, {
-                      [LIST_ID_PATH_PARAM]: currentList.id,
-                      [TASK_ID_PATH_PARAM]: task.id,
-                    })
-                  );
-                }}
-              >
-                Edit
-              </button>
-            </li>
-          );
-        })}
+        {currentList.tasks.map((task) => (
+          <li key={task.id}>
+            {task.title}
+            <button
+              type="button"
+              onClick={() => {
+                navigate(
+                  replacePathParamsInRoute(EDIT_TASK_ROUTE, {
+                    [LIST_ID_PATH_PARAM]: currentList.id,
+                    [TASK_ID_PATH_PARAM]: task.id,
+                  }),
+                );
+              }}
+            >
+              Edit
+            </button>
+          </li>
+        ))}
       </ul>
       <button
+        type="button"
         onClick={() => {
           navigate(-1);
         }}
@@ -74,6 +76,17 @@ const ListDetailsPage = ({ listData }) => {
   ) : (
     <Loader />
   );
-};
+}
 
 export default ListDetailsPage;
+
+ListDetailsPage.propTypes = {
+  listData: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    tasks: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })),
+  })).isRequired,
+};

@@ -19,6 +19,6 @@ module.exports = {
     'react',
   ],
   rules: {
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['src/setupTests.js'] }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['src/setupTests.js', '**/*.test.js', '**/*.test.jsx'] }],
   },
 };

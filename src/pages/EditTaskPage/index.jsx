@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Loader } from "../../components";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Loader } from '../../components';
 import {
   LIST_DETAILS_ROUTE,
   LIST_ID_PATH_PARAM,
   NOT_FOUND_ROUTE,
   TASK_ID_PATH_PARAM,
-} from "../../constants/routes";
-import { getItemBasedOnId, replacePathParamsInRoute } from "../../utils/common";
-import { getListDataWithUpdatedTask } from "../../utils/lists";
-import ".";
+} from '../../constants/routes';
+import { getItemBasedOnId, replacePathParamsInRoute } from '../../utils/common';
+import { getListDataWithUpdatedTask } from '../../utils/lists';
 
-const EditTaskPage = ({ listData, setListData }) => {
+function EditTaskPage({ listData, setListData }) {
   const [currentTask, setCurrentTask] = useState(null);
 
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const EditTaskPage = ({ listData, setListData }) => {
   useEffect(() => {
     const updatedCurrentTask = getItemBasedOnId(
       getItemBasedOnId(listData, listId)?.tasks,
-      taskId
+      taskId,
     );
 
     if (updatedCurrentTask) {
@@ -42,12 +42,12 @@ const EditTaskPage = ({ listData, setListData }) => {
 
   const onTaskSave = () => {
     setListData(
-      getListDataWithUpdatedTask(listData, listId, taskId, currentTask)
+      getListDataWithUpdatedTask(listData, listId, taskId, currentTask),
     );
     navigate(
       replacePathParamsInRoute(LIST_DETAILS_ROUTE, {
         [LIST_ID_PATH_PARAM]: listId,
-      })
+      }),
     );
   };
 
@@ -58,8 +58,9 @@ const EditTaskPage = ({ listData, setListData }) => {
         onChange={onTaskTitleChange}
         data-testid="testId-taskTitleTextInput"
       />
-      <button onClick={onTaskSave}>Save</button>
+      <button type="button" onClick={onTaskSave}>Save</button>
       <button
+        type="button"
         onClick={() => {
           navigate(-1);
         }}
@@ -70,6 +71,18 @@ const EditTaskPage = ({ listData, setListData }) => {
   ) : (
     <Loader />
   );
-};
+}
 
 export default EditTaskPage;
+
+EditTaskPage.propTypes = {
+  listData: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    tasks: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })),
+  })).isRequired,
+  setListData: PropTypes.func.isRequired,
+};

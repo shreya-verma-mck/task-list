@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { ListDetailsPage, EditTaskPage, AllListsPage } from "./pages";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LISTS } from "./constants/lists";
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ListDetailsPage, EditTaskPage, AllListsPage } from './pages';
+import LISTS from './constants/lists';
 import {
   ALL_LISTS_ROUTE,
   EDIT_TASK_ROUTE,
   LIST_DETAILS_ROUTE,
-} from "./constants/routes";
+} from './constants/routes';
 
 function App() {
   const [listData, setListData] = useState(LISTS);
@@ -21,7 +21,7 @@ function App() {
             element={
               <AllListsPage listData={listData} setListData={setListData} />
             }
-          ></Route>
+          />
 
           {/* Create List Page */}
           {/* <Route
@@ -33,7 +33,7 @@ function App() {
           <Route
             path={LIST_DETAILS_ROUTE}
             element={<ListDetailsPage listData={listData} />}
-          ></Route>
+          />
 
           {/* Create Task */}
           {/* <Route
@@ -47,12 +47,12 @@ function App() {
             element={
               <EditTaskPage listData={listData} setListData={setListData} />
             }
-          ></Route>
+          />
 
           <Route
             path="*"
             element={<div>404!Error. Page not found</div>}
-          ></Route>
+          />
         </Routes>
       </BrowserRouter>
     </div>
