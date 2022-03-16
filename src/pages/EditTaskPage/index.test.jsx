@@ -1,52 +1,38 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import EditTaskPage from ".";
-import {
-  EDIT_TASK_ROUTE,
-  LIST_DETAILS_ROUTE,
-  LIST_ID_PATH_PARAM,
-  TASK_ID_PATH_PARAM,
-} from "../../constants/routes";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { NOT_FOUND_ROUTE } from "../../constants/routes";
 import { MOCK_LISTS } from "../../mocks/lists";
-import { replacePathParamsInRoute } from "../../utils/common";
+
+const mockNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => {
+  return {
+    useNavigate: () => mockNavigate,
+    useParams: () => ({
+      listId: "1",
+      taskId: "2",
+    }),
+  };
+});
 
 describe("EditTaskPage", () => {
   const mockSetListData = jest.fn();
-  // Either render router or mock react-router-dom functions: useParams + useNavigate
-  const component = (
-    <MemoryRouter
-      initialEntries={[
-        replacePathParamsInRoute(EDIT_TASK_ROUTE, {
-          [LIST_ID_PATH_PARAM]: 1,
-          [TASK_ID_PATH_PARAM]: 1,
-        }),
-      ]}
-    >
-      <Routes>
-        <Route
-          path={EDIT_TASK_ROUTE}
-          element={
-            <EditTaskPage listData={MOCK_LISTS} setListData={mockSetListData} />
-          }
-        ></Route>
-        <Route
-          path={LIST_DETAILS_ROUTE}
-          element={<div>Mock List Page</div>}
-        ></Route>
-      </Routes>
-    </MemoryRouter>
+
+  const component = (listData = MOCK_LISTS) => (
+    <EditTaskPage listData={listData} setListData={mockSetListData} />
   );
 
   beforeEach(() => {
+    mockNavigate.mockClear();
     mockSetListData.mockClear();
   });
 
   it("should update task title input value and not list data when task title input text is changed", () => {
-    render(component);
+    render(component());
     const mockTaskTitleText = "Test Task Title";
     expect(screen.getByTestId("testId-taskTitleTextInput")).toHaveAttribute(
       "value",
-      "walk"
+      "prep your meals"
     );
     fireEvent.change(screen.getByTestId("testId-taskTitleTextInput"), {
       target: { value: mockTaskTitleText },
@@ -58,8 +44,8 @@ describe("EditTaskPage", () => {
     expect(mockSetListData).not.toHaveBeenCalled();
   });
 
-  it("should update list data with changed task when save button is clicked", () => {
-    render(component);
+  it("should update list data with changed task and navigate to list details page when save button is clicked", () => {
+    render(component());
     const mockTaskTitleText = "Test List Save";
     fireEvent.change(screen.getByTestId("testId-taskTitleTextInput"), {
       target: { value: mockTaskTitleText },
@@ -72,8 +58,8 @@ describe("EditTaskPage", () => {
         id: 1,
         name: "Self Learning",
         tasks: [
-          { id: 1, title: mockTaskTitleText },
-          { id: 2, title: "prep your meals" },
+          { id: 1, title: "walk" },
+          { id: 2, title: mockTaskTitleText },
           { id: 3, title: "meditate" },
         ],
       },
@@ -87,5 +73,20 @@ describe("EditTaskPage", () => {
         ],
       },
     ]);
+    expect(mockNavigate).toBeCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("/lists/1");
+  });
+
+  it("should navigate to not found page when task is not found based on list id and task id", () => {
+    render(component([]));
+    expect(mockNavigate).toBeCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith(NOT_FOUND_ROUTE);
+  });
+
+  it("should navigate to previous page when back button is clicked", () => {
+    render(component());
+    fireEvent.click(screen.getByText("Back"));
+    expect(mockNavigate).toBeCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });
