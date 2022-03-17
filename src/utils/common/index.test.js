@@ -1,4 +1,4 @@
-import MOCK_LISTS from '../../mocks/lists';
+import MOCK_LISTS from '../../../__mocks__/lists';
 import { getItemBasedOnId, replacePathParamsInRoute } from '.';
 
 describe('getItemBasedOnId', () => {

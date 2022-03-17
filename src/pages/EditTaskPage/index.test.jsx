@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import EditTaskPage from '.';
 import { NOT_FOUND_ROUTE } from '../../constants/routes';
-import MOCK_LISTS from '../../mocks/lists';
+import MOCK_LISTS from '../../../__mocks__/lists';
 
 const mockNavigate = jest.fn();
 
